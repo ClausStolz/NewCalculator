@@ -1,7 +1,18 @@
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class MainWindow
 {
+
+	private const int elementWidth  = 50;
+	private const int elementHeight = 50;
+
+	private const int offsetX = 20;
+	private const int offsetY = 10;
+
+	private const int defaultElementCountX = 4;
+	private const int defaultElementCountY = 5;
+
 	private global::Gtk.Label calcLabel;
 
 	private global::Gtk.Fixed fixedCont;
@@ -12,7 +23,7 @@ public partial class MainWindow
 	protected virtual void Build()
 	{
 		global::Stetic.Gui.Initialize(this);
-		// Widget MainWindow
+
 		this.Name  = "MainWindow";
 		this.Title = global::Mono.Unix.Catalog.GetString("MainWindow");
 
@@ -27,6 +38,20 @@ public partial class MainWindow
 			HasWindow = false
 		};
 
+		this.calcLabel = new global::Gtk.Label()
+		{
+			WidthRequest  = elementWidth * defaultElementCountX,
+            HeightRequest = elementHeight,
+            Name          = "CalcLabel",
+            Xalign        = 1F,
+            Yalign        = 1F,
+            Text          = "0"
+		};
+		this.fixedCont.Add(calcLabel);
+		var w = (global::Gtk.Fixed.FixedChild)this.fixedCont[calcLabel];
+		w.X = offsetX;
+		w.Y = offsetY;
+
 		BuildDigitButtons();
 
 		this.Add(fixedCont);
@@ -35,35 +60,50 @@ public partial class MainWindow
 			this.Child.ShowAll();
 		}
 
-		this.WidthRequest  = 240;
-		this.HeightRequest = 320;
+		this.WidthRequest  = (2 * offsetX) + (defaultElementCountX * elementWidth);
+		this.HeightRequest = (2 * offsetY) + (defaultElementCountY * elementHeight);
 		this.DefaultWidth  = this.WidthRequest;
 		this.DefaultHeight = this.HeightRequest;
 		this.Resizable     = false;
 
 		this.Show();
+
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);
 	}
 
     protected virtual void BuildDigitButtons()
     {
+        InitButton((2 * elementWidth), elementHeight, "0", "0", 0, ((defaultElementCountY - 2) * elementHeight));
+
         for (int i = 1; i < 10; i++)
         {
-			var button = new global::Gtk.Button()
-			{
-				WidthRequest  = 50,
-                HeightRequest = 50,
-                CanFocus      = true,
-                Name          = "button" + i,
-                UseUnderline  = true,
-                Label         = global::Mono.Unix.Catalog.GetString(i.ToString())
-			};
-
-			this.fixedCont.Add(button);
-			this.digitButtons.Add(button);
-			global::Gtk.Fixed.FixedChild w = (global::Gtk.Fixed.FixedChild)this.fixedCont[button];
-			w.X = 20 + ((i - 1) % 3) * 50;
-			w.Y = 50 + ((i - 1) / 3) * 50;
+			InitButton(
+                    elementWidth,
+                    elementHeight,
+                    i.ToString(),
+                    i.ToString(),
+                    ((i - 1) % (defaultElementCountX - 1)) * elementWidth,
+                    ((i - 1) / (defaultElementCountY - 2)) * elementHeight
+                );
         }
     }
+
+    private void InitButton(int width, int height, string suffix, string label, int positionX, int positionY)
+    {
+		var button = new global::Gtk.Button()
+		{
+			WidthRequest = width,
+			HeightRequest = height,
+			CanFocus = true,
+			Name = "button" + suffix,
+			UseUnderline = true,
+			Label = global::Mono.Unix.Catalog.GetString(label)
+		};
+		this.fixedCont.Add(button);
+		this.digitButtons.Add(button);
+
+        var w = (global::Gtk.Fixed.FixedChild)this.fixedCont[button];
+		w.X = offsetX + positionX;
+		w.Y = (offsetY + this.calcLabel.HeightRequest) + positionY;
+	}
 }
