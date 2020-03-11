@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Gtk;
 
 public partial class MainWindow : Gtk.Window
@@ -16,6 +17,6 @@ public partial class MainWindow : Gtk.Window
 
     private void DigitButtonClick(object sender, EventArgs args)
     {
-        calcLabel.Text += (sender as global::Gtk.Button).Label;
+        this.calcLabel.Text += (sender as global::Gtk.Button).Label;
     }
 }
