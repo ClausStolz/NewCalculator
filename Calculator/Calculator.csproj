@@ -57,12 +57,15 @@
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CalculatorEngine.cs" />
-    <Compile Include="MainWindow.cs" />
-    <Compile Include="View\MainWindowUI.cs" />
+    <Compile Include="Controller\CalculatorEngine.cs" />
+    <Compile Include="View\MainWindow.cs" />
+    <Compile Include="View\UI\MainWindowUI.cs" />
+    <Compile Include="gtk-gui\MainWindow.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="View\" />
+    <Folder Include="Controller\" />
+    <Folder Include="View\UI\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
