@@ -47,6 +47,7 @@ public partial class MainWindow
             Yalign        = 1F,
             Text          = "0"
 		};
+
 		this.fixedCont.Add(calcLabel);
 		var w = (global::Gtk.Fixed.FixedChild)this.fixedCont[calcLabel];
 		w.X = offsetX;
@@ -73,22 +74,20 @@ public partial class MainWindow
 
     protected virtual void BuildDigitButtons()
     {
-        InitButton((2 * elementWidth), elementHeight, "0", "0", 0, ((defaultElementCountY - 2) * elementHeight));
+        InitButton((2 * elementWidth), elementHeight, "0", "0", 0,
+            ((defaultElementCountY - 2) * elementHeight), this.DigitButtonClick);
 
         for (int i = 1; i < 10; i++)
         {
-			InitButton(
-                    elementWidth,
-                    elementHeight,
-                    i.ToString(),
-                    i.ToString(),
+			InitButton(elementWidth, elementHeight, i.ToString(), i.ToString(),
                     ((i - 1) % (defaultElementCountX - 1)) * elementWidth,
-                    ((i - 1) / (defaultElementCountY - 2)) * elementHeight
-                );
+                    ((i - 1) / (defaultElementCountY - 2)) * elementHeight,
+                    this.DigitButtonClick);
         }
     }
 
-    private void InitButton(int width, int height, string suffix, string label, int positionX, int positionY)
+    private void InitButton(int width, int height, string suffix, string label,
+        int positionX, int positionY, global::System.EventHandler clickEvent)
     {
 		var button = new global::Gtk.Button()
 		{
@@ -99,6 +98,9 @@ public partial class MainWindow
 			UseUnderline = true,
 			Label = global::Mono.Unix.Catalog.GetString(label)
 		};
+
+		button.Clicked += clickEvent;
+
 		this.fixedCont.Add(button);
 		this.digitButtons.Add(button);
 
