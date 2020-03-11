@@ -50,8 +50,8 @@ public partial class MainWindow
 
 		this.fixedCont.Add(calcLabel);
 		var w = (global::Gtk.Fixed.FixedChild)this.fixedCont[calcLabel];
-		w.X = offsetX;
-		w.Y = offsetY;
+		w.X   = offsetX;
+		w.Y   = offsetY;
 
 		BuildDigitButtons();
 
@@ -91,12 +91,12 @@ public partial class MainWindow
     {
 		var button = new global::Gtk.Button()
 		{
-			WidthRequest = width,
+			WidthRequest  = width,
 			HeightRequest = height,
-			CanFocus = true,
-			Name = "button" + suffix,
-			UseUnderline = true,
-			Label = global::Mono.Unix.Catalog.GetString(label)
+			CanFocus      = true,
+			Name          = "button" + suffix,
+			UseUnderline  = true,
+			Label         = global::Mono.Unix.Catalog.GetString(label)
 		};
 
 		button.Clicked += clickEvent;
@@ -105,7 +105,7 @@ public partial class MainWindow
 		this.digitButtons.Add(button);
 
         var w = (global::Gtk.Fixed.FixedChild)this.fixedCont[button];
-		w.X = offsetX + positionX;
-		w.Y = (offsetY + this.calcLabel.HeightRequest) + positionY;
+		w.X   = offsetX + positionX;
+		w.Y   = (offsetY + this.calcLabel.HeightRequest) + positionY;
 	}
 }
